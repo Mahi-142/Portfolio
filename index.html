@@ -32,6 +32,7 @@
     font-family: var(--mono);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><ellipse cx="13" cy="15" rx="7" ry="8.5" fill="%23e8342c" stroke="%23111" stroke-width="1"/><path d="M13,8 L13,23" stroke="%23111" stroke-width="1"/><circle cx="13" cy="6.5" r="3.4" fill="%23111"/><circle cx="9.5" cy="11.5" r="1.3" fill="%23111"/><circle cx="16.5" cy="11.5" r="1.3" fill="%23111"/><circle cx="8.5" cy="16" r="1.3" fill="%23111"/><circle cx="17.5" cy="16" r="1.3" fill="%23111"/><circle cx="11.5" cy="20" r="1.1" fill="%23111"/><circle cx="14.5" cy="20" r="1.1" fill="%23111"/><line x1="10.5" y1="4.5" x2="8" y2="2" stroke="%23111" stroke-width="1"/><line x1="15.5" y1="4.5" x2="18" y2="2" stroke="%23111" stroke-width="1"/><line x1="7" y1="12" x2="2.5" y2="10" stroke="%23111" stroke-width="1"/><line x1="19" y1="12" x2="23.5" y2="10" stroke="%23111" stroke-width="1"/><line x1="6.5" y1="19" x2="2" y2="21.5" stroke="%23111" stroke-width="1"/><line x1="19.5" y1="19" x2="24" y2="21.5" stroke="%23111" stroke-width="1"/></svg>') 13 13, auto;
   }
 
   a{ color: inherit; text-decoration: none; }
@@ -199,6 +200,50 @@
   @keyframes win-flicker{
     0%, 17%, 19%, 22%, 78%, 100%{ opacity: 0.85; }
     18%, 20%, 79%{ opacity: 0.1; }
+  }
+
+  .cityscape .spider{
+    transform-origin: center;
+  }
+
+  /* ---------- web-shoot effect layer ---------- */
+  #web-fx-layer{
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 60;
+  }
+
+  .web-shot{
+    fill: none;
+    stroke: #f4f6f8;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.9));
+  }
+
+  .web-fray{
+    fill: none;
+    stroke: #f4f6f8;
+    stroke-width: 0.6;
+    stroke-linecap: round;
+    opacity: 0.75;
+    filter: drop-shadow(0 0 1.5px rgba(255,255,255,0.8));
+  }
+
+  .web-impact{
+    fill: #f4f6f8;
+  }
+
+  @keyframes web-impact-pulse{
+    0%{ r: 2; opacity: 1; }
+    100%{ r: 16; opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cityscape .spider{ animation: none; }
   }
 
   /* ---------- flying airplane ---------- */
@@ -645,6 +690,21 @@
 
       <path class="silhouette" d="M0,260 L0,160 L60,160 L60,80 L130,80 L130,190 L190,190 L190,40 L260,40 L260,130 L330,130 L330,10 L400,10 L400,150 L470,150 L470,60 L540,60 L540,200 L610,200 L610,25 L680,25 L680,175 L750,175 L750,100 L820,100 L820,0 L890,0 L890,140 L960,140 L960,55 L1030,55 L1030,215 L1100,215 L1100,35 L1170,35 L1170,130 L1240,130 L1240,75 L1310,75 L1310,190 L1380,190 L1380,15 L1440,15 L1440,260 Z"></path>
 
+      <g class="spider" id="spider-body" transform="translate(95,84)">
+        <line x1="0" y1="0" x2="-10" y2="-14" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="0" x2="10" y2="-14" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="2" x2="-13" y2="-4" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="2" x2="13" y2="-4" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="4" x2="-12" y2="8" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="4" x2="12" y2="8" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="5" x2="-8" y2="17" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <line x1="0" y1="5" x2="8" y2="17" stroke="#0a0a0a" stroke-width="1.6"></line>
+        <ellipse cx="0" cy="3" rx="6" ry="5" fill="#0a0a0a"></ellipse>
+        <circle cx="0" cy="-3" r="3.2" fill="#0a0a0a"></circle>
+        <circle cx="-1.2" cy="-3.6" r="0.9" fill="var(--teal)"></circle>
+        <circle cx="1.2" cy="-3.6" r="0.9" fill="var(--teal)"></circle>
+      </g>
+
       <rect class="win" x="20" y="205" width="8" height="12" style="animation-delay:0.2s"></rect>
       <rect class="win light" x="40" y="150" width="8" height="12" style="animation-delay:1.4s"></rect>
       <rect class="win" x="80" y="110" width="8" height="12" style="animation-delay:2.1s"></rect>
@@ -701,6 +761,8 @@
   </div>
 
   <div class="scanlines" aria-hidden="true"></div>
+
+  <svg id="web-fx-layer" aria-hidden="true"></svg>
 
   <header class="topbar">
     <div class="system-name">✦ MAHI.EXE</div>
@@ -998,6 +1060,95 @@
     sections.forEach(function(section){
       navObserver.observe(section);
       fadeObserver.observe(section);
+    });
+
+    // spider on the skyline shoots a web to whichever nav icon you click
+    var webLayer = document.getElementById('web-fx-layer');
+    var spider = document.getElementById('spider-body');
+    var svgNS = 'http://www.w3.org/2000/svg';
+
+    function shootWeb(targetEl){
+      if (!spider || !webLayer) return;
+      var a = spider.getBoundingClientRect();
+      var b = targetEl.getBoundingClientRect();
+      var x1 = a.left + a.width / 2;
+      var y1 = a.top + a.height / 2;
+      var x2 = b.left + 14;
+      var y2 = b.top + b.height / 2;
+
+      var createdEls = [];
+
+      function drawStrand(d, className, duration){
+        var path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('class', className);
+        webLayer.appendChild(path);
+        createdEls.push(path);
+        var len = path.getTotalLength();
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+        path.getBoundingClientRect();
+        path.style.transition = 'stroke-dashoffset ' + duration + 's ease-out, opacity 0.25s ease ' + duration + 's';
+        requestAnimationFrame(function(){ path.style.strokeDashoffset = '0'; });
+        return path;
+      }
+
+      var dx = x2 - x1, dy = y2 - y1;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      var ux = dx / dist, uy = dy / dist;
+
+      // a few thin carrier strands shooting out from the spider
+      var carrierCount = 3;
+      var carrierEnds = [];
+      for (var c = 0; c < carrierCount; c++){
+        var endJx = x2 + (Math.random() * 24 - 12);
+        var endJy = y2 + (Math.random() * 24 - 12);
+        carrierEnds.push([endJx, endJy]);
+        var midX = (x1 + endJx) / 2 + (-uy) * (Math.random() * 10 - 5);
+        var midY = (y1 + endJy) / 2 + (ux) * (Math.random() * 10 - 5);
+        drawStrand('M' + x1 + ',' + y1 + ' Q' + midX + ',' + midY + ' ' + endJx + ',' + endJy, 'web-shot', 0.17);
+      }
+
+      // dense, chaotic tangle where the web hits — the landing burst
+      var tangleCount = 20;
+      for (var i = 0; i < tangleCount; i++){
+        var angle = Math.random() * Math.PI * 2;
+        var len = 8 + Math.random() * 34;
+        var ex = x2 + Math.cos(angle) * len;
+        var ey = y2 + Math.sin(angle) * len;
+        var jx = x2 + (Math.random() * 10 - 5);
+        var jy = y2 + (Math.random() * 10 - 5);
+        (function(fx, fy, tx, ty){
+          setTimeout(function(){
+            drawStrand('M' + fx + ',' + fy + ' L' + tx + ',' + ty, 'web-fray', 0.09);
+          }, 130);
+        })(jx, jy, ex, ey);
+      }
+
+      setTimeout(function(){
+        var impact = document.createElementNS(svgNS, 'circle');
+        impact.setAttribute('cx', x2);
+        impact.setAttribute('cy', y2);
+        impact.setAttribute('r', '1.5');
+        impact.setAttribute('class', 'web-impact');
+        impact.style.animation = 'web-impact-pulse 0.35s ease-out forwards';
+        webLayer.appendChild(impact);
+        createdEls.push(impact);
+      }, 170);
+
+      setTimeout(function(){
+        createdEls.forEach(function(el){ el.style.opacity = '0'; });
+      }, 560);
+
+      setTimeout(function(){
+        createdEls.forEach(function(el){ el.remove(); });
+      }, 820);
+    }
+
+    icons.forEach(function(icon){
+      icon.addEventListener('click', function(){
+        shootWeb(icon);
+      });
     });
   </script>
 
