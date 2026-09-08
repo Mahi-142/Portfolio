@@ -1,0 +1,675 @@
+/* ==========================================================================
+   MAHI.EXE — Hacker/OS Portfolio Theme
+   Matches the actual HTML structure: .desktop, .window, .desktop-icons, .taskbar
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --bg-deep: #052426;           /* near-black, cyan undertone */
+  --bg-window: #0A3236;         /* window body — deep cyan */
+  --bg-titlebar: linear-gradient(90deg, #0E4A50, #147F87); /* cyan gradient */
+  --bg-sidebar: #072A2D;
+
+  --pink: #00E5FF;              /* primary neon cyan accent (was pink) */
+  --cyan: #16C2D1;              /* secondary deeper teal-cyan accent */
+  --success: #5FE0A0;
+
+  --text: #E7ECF5;
+  --text-dim: #7C8AA3;
+  --border: #1E2B45;
+  --border-bright: #2E4066;
+
+  --pixel-font: 'Press Start 2P', monospace;
+  --mono-font: 'JetBrains Mono', monospace;
+
+  --radius: 4px;
+  --glow-pink: 0 0 18px rgba(0, 229, 255, 0.45);
+  --glow-cyan: 0 0 18px rgba(22, 194, 209, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(56, 225, 232, 0.16), transparent 40%),
+    radial-gradient(circle at 15% 80%, rgba(20, 127, 135, 0.18), transparent 45%),
+    var(--bg-deep);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--mono-font);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--pink); }
+a:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+.desktop {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Top bar
+   ========================================================================== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--pink);
+}
+.system-name {
+  font-family: var(--pixel-font);
+  font-size: 0.75rem;
+  color: var(--pink);
+  letter-spacing: 0.05em;
+}
+.system-status {
+  font-size: 0.75rem;
+  color: var(--cyan);
+  letter-spacing: 0.05em;
+}
+.window-controls {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.4em;
+}
+
+/* ==========================================================================
+   Desktop icons (sidebar)
+   ========================================================================== */
+.desktop-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.75rem;
+  padding: 1.4rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--mono-font);
+  cursor: pointer;
+  padding: 0;
+}
+.desktop-icon .icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-window);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1.3rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.desktop-icon:hover .icon {
+  border-color: var(--pink);
+  box-shadow: var(--glow-pink);
+}
+.desktop-icon span:last-child {
+  font-size: 0.6rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+.desktop-icon:hover span:last-child { color: var(--text); }
+
+/* ==========================================================================
+   Windows (shared chrome)
+   ========================================================================== */
+.window {
+  background: var(--bg-window);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  margin: 1.5rem auto;
+  width: calc(100% - 3rem);
+  max-width: 900px;
+  overflow: hidden;
+}
+.hidden-window { display: none; }
+.hidden-window.is-open { display: block; }
+
+.window-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 1rem;
+  background: var(--bg-titlebar);
+  border-bottom: 1px solid var(--pink);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+.window-title span:first-child::before {
+  content: "◆ ";
+  color: var(--pink);
+}
+.window-buttons {
+  display: flex;
+  gap: 0.4rem;
+}
+.window-buttons button {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  border-radius: 2px;
+  cursor: pointer;
+  line-height: 1;
+}
+.window-buttons button:hover { border-color: var(--cyan); color: var(--cyan); }
+.window-buttons .close-window:hover { border-color: var(--pink); color: var(--pink); }
+
+.window-content {
+  padding: 1.75rem;
+}
+
+.file-path {
+  font-size: 0.75rem;
+  color: var(--cyan);
+  margin: 0 0 1rem;
+}
+
+.window-content h2 {
+  font-family: var(--pixel-font);
+  font-size: 1.1rem;
+  color: var(--pink);
+  line-height: 1.7;
+  margin: 0 0 1.4rem;
+  text-shadow: var(--glow-pink);
+}
+
+.window-content p { color: var(--text-dim); line-height: 1.7; }
+
+/* ==========================================================================
+   Hero window
+   ========================================================================== */
+.hero-window { margin-top: 0; }
+
+.terminal-line {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0.3rem 0;
+}
+.terminal-line.success { color: var(--success); }
+
+.hero-text { margin: 1.5rem 0; }
+
+.small-label {
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+
+.hero-content h1 {
+  font-family: var(--pixel-font);
+  font-size: clamp(1.3rem, 3.5vw, 2rem);
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+.hero-content h1 span {
+  color: var(--pink);
+  text-shadow: var(--glow-pink);
+}
+
+.hero-content h2 {
+  font-family: var(--pixel-font);
+  font-size: clamp(0.9rem, 2.2vw, 1.2rem);
+  color: var(--cyan);
+  line-height: 1.7;
+  margin: 0 0 1.25rem;
+}
+
+.description {
+  max-width: 55ch;
+  font-size: 0.9rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.retro-button {
+  font-family: var(--mono-font);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--pink);
+  border: 1px solid var(--pink);
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+.retro-button:hover {
+  background: var(--pink);
+  color: var(--bg-deep);
+  box-shadow: var(--glow-pink);
+}
+
+/* ==========================================================================
+   About window
+   ========================================================================== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.system-info {
+  border: 1px dashed var(--border-bright);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  font-size: 0.8rem;
+  color: var(--cyan);
+}
+.system-info p { color: inherit; margin: 0.35rem 0; }
+
+/* ==========================================================================
+   Skills window
+   ========================================================================== */
+.skill-block {
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--border);
+}
+.skill-block:last-child { border-bottom: 1px solid var(--border); }
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.skill-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--pink);
+  letter-spacing: 0.03em;
+}
+.skill-tags {
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+}
+
+.skill-desc {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin: 0 0 0.75rem;
+  max-width: 65ch;
+}
+
+.skill-projects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.skill-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--text);
+  border: 1px solid var(--border-bright);
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius);
+  transition: border-color 0.15s, color 0.15s;
+}
+.skill-project-link:hover {
+  border-color: var(--pink);
+  color: var(--pink);
+}
+
+/* ==========================================================================
+   Skills train — each wagon carries one skill area
+   ========================================================================== */
+.train-track {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem 0 2.25rem;
+}
+.train-track:hover .train {
+  animation-play-state: paused;
+}
+
+.train {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  width: max-content;
+  animation: trainMove 9s linear infinite;
+}
+@keyframes trainMove {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* steam puffs rising off the locomotive */
+.locomotive::before,
+.locomotive::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 55%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(231, 236, 245, 0.55);
+  animation: steamPuff 1.4s ease-out infinite;
+}
+.locomotive::after {
+  left: 30%;
+  animation-delay: 0.7s;
+}
+@keyframes steamPuff {
+  0%   { opacity: 0.6; transform: translate(0, 0) scale(0.6); }
+  100% { opacity: 0; transform: translate(-8px, -26px) scale(1.5); }
+}
+
+.locomotive {
+  font-size: 2.2rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
+  flex-shrink: 0;
+  position: relative;
+}
+
+.wagon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 220px;
+  background: var(--bg-window);
+  border: 1px solid var(--border-bright);
+  border-top: 4px solid var(--pink);
+  border-radius: 6px;
+  padding: 0.9rem 1rem 1.2rem;
+  flex-shrink: 0;
+  animation: wagonBounce 0.45s ease-in-out infinite alternate;
+}
+/* coupler bar connecting this car to the one before it (locomotive or wagon) */
+.wagon::before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  bottom: 13px;
+  width: 1rem;
+  height: 4px;
+  background: var(--border-bright);
+}
+@keyframes wagonBounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-2px); }
+}
+.wagon-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--pink);
+  letter-spacing: 0.03em;
+}
+.wagon-tag {
+  font-size: 0.68rem;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+}
+.wagon-desc {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.wagon-wheels span {
+  position: absolute;
+  bottom: -7px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: conic-gradient(var(--cyan) 0 90deg, transparent 90deg 180deg, var(--cyan) 180deg 270deg, transparent 270deg 360deg);
+  box-shadow: 0 0 6px rgba(22, 194, 209, 0.6);
+  animation: wheelSpin 0.35s linear infinite;
+}
+@keyframes wheelSpin {
+  to { transform: rotate(360deg); }
+}
+.wagon-wheels span:first-child { left: 18px; }
+.wagon-wheels span:last-child { right: 18px; }
+
+.rail {
+  height: 3px;
+  margin-top: 0.5rem;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border-bright) 0,
+    var(--border-bright) 22px,
+    transparent 22px,
+    transparent 44px
+  );
+}
+
+/* ==========================================================================
+   Projects window
+   ========================================================================== */
+.project-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.25rem;
+  align-items: start;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+}
+.project-card:last-child { border-bottom: 1px solid var(--border); }
+
+.project-number {
+  font-family: var(--pixel-font);
+  font-size: 0.9rem;
+  color: var(--pink);
+}
+
+.project-card h3 {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.02em;
+}
+.project-card p { margin: 0 0 0.5rem; font-size: 0.85rem; }
+.project-card .tech {
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+}
+.project-card > a {
+  font-size: 0.8rem;
+  color: var(--pink);
+  white-space: nowrap;
+  align-self: center;
+}
+.project-card > a:hover { color: var(--cyan); }
+
+/* ==========================================================================
+   Education window
+   ========================================================================== */
+.education-card {
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+}
+.education-card .year {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+}
+.education-card h3 {
+  font-size: 1rem;
+  color: var(--text);
+  margin: 0 0 0.35rem;
+}
+.education-card p { color: var(--pink); margin: 0 0 0.5rem; }
+.education-card > span {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   Contact window
+   ========================================================================== */
+.contact-content a {
+  display: inline-block;
+  margin: 0.75rem 1.25rem 0 0;
+  font-size: 0.85rem;
+  color: var(--pink);
+}
+.contact-content a:hover { color: var(--cyan); }
+
+/* ==========================================================================
+   Taskbar
+   ========================================================================== */
+.taskbar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--bg-sidebar);
+  border-top: 1px solid var(--pink);
+}
+.start-button {
+  font-size: 0.8rem;
+  color: var(--pink);
+  border: 1px solid var(--pink);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.task {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  border: 1px solid var(--border-bright);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius);
+}
+.clock {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* ---- Tablet (≤ 960px) ---- */
+@media (max-width: 960px) {
+  .desktop-icons { gap: 1.25rem; padding: 1.1rem; }
+  .desktop-icon .icon { width: 38px; height: 38px; font-size: 1.1rem; }
+  .desktop-icon span:last-child { font-size: 0.55rem; }
+  .window { width: calc(100% - 2.5rem); }
+  .window-content { padding: 1.4rem; }
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}
+
+/* ---- Mobile (≤ 760px) ---- */
+@media (max-width: 760px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.85rem 1.1rem;
+  }
+  .window-controls { order: 3; width: 100%; letter-spacing: 0.3em; }
+  .desktop-icons {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    padding: 1rem 1.1rem;
+    gap: 1.25rem;
+  }
+  .desktop-icon { flex-shrink: 0; }
+  .window { width: calc(100% - 2.2rem); margin: 1.1rem auto; }
+  .window-content { padding: 1.25rem; }
+  .window-content h2 { font-size: 1rem; }
+  .about-grid { grid-template-columns: 1fr; }
+  .project-card { grid-template-columns: auto 1fr; }
+  .project-card > a { grid-column: 2; }
+  .skill-header { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .hero-actions { gap: 0.75rem; }
+  .retro-button { font-size: 0.75rem; padding: 0.55rem 0.9rem; }
+  .taskbar { flex-wrap: wrap; padding: 0.6rem 1.1rem; }
+  .clock { margin-left: 0; order: 3; width: 100%; text-align: right; }
+}
+
+/* ---- Small phones (≤ 480px) ---- */
+@media (max-width: 480px) {
+  .system-name { font-size: 0.65rem; }
+  .system-status { font-size: 0.65rem; }
+  .desktop-icons { gap: 1rem; padding: 0.85rem 0.9rem; }
+  .desktop-icon .icon { width: 34px; height: 34px; font-size: 1rem; }
+  .desktop-icon span:last-child { font-size: 0.5rem; }
+  .window { width: calc(100% - 1.5rem); }
+  .window-content { padding: 1rem; }
+  .file-path { font-size: 0.68rem; }
+  .hero-content h1 { font-size: 1.15rem; }
+  .hero-content h2 { font-size: 0.85rem; }
+  .description { font-size: 0.85rem; }
+  .small-label { font-size: 0.62rem; }
+  .project-card { grid-template-columns: 1fr; }
+  .project-number { order: -1; }
+  .project-card > a { grid-column: 1; margin-top: 0.4rem; }
+  .skill-name { font-size: 0.78rem; }
+  .skill-tags { font-size: 0.62rem; }
+  .skill-desc { font-size: 0.78rem; }
+  .skill-project-link { font-size: 0.68rem; padding: 0.3rem 0.6rem; }
+  .education-card { padding: 1rem 1.1rem; }
+  .contact-content a { display: block; margin: 0.6rem 0 0; }
+  .start-button, .task { font-size: 0.72rem; padding: 0.35rem 0.7rem; }
+
+  .locomotive { font-size: 1.8rem; }
+  .wagon { min-width: 170px; padding: 0.7rem 0.8rem; }
+  .wagon-title { font-size: 0.68rem; }
+  .wagon-tag { font-size: 0.58rem; }
+}
+.train-track{
+  animation: train-scroll 9s linear infinite;
+}
